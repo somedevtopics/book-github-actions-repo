@@ -26,3 +26,8 @@ jobs:
       with:
         name: Monpackage
         path: dest
+  test:
+    name: "a effacer"
+    runs-on: ubuntu-latest
+    needs: build
+    if: failure()
