@@ -2,14 +2,21 @@ name: Dual jobs
 on:
   workflow_dispatch:
 
+env:
+ MAVARIABLE: valeur1
+ MAVARIABLE2: valeur1
 jobs:
-  job1:
+  test_variables:
     runs-on: ubuntu-latest
+    env:
+      MAVARIABLE: valeur2
     steps:
-      - run: echo "hello job2" > test.txt # écrit dans test.txt
-  
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - run: cat test.txt # lit le contenu de test.txt
+    - run: echo $MAVARIABLE         # affiche valeur2 car variable au niveaux du job
+    - run: echo ${{env.MAVARIABLE}} # affiche valeur2 car variable au niveaux du job
+    - run: echo ${{env.MAVARIABLE}} # affiche valeur3 car variable au niveaux du step
+      name: variable env avec redefinition au step level
+      env:
+        MAVARIABLE: valeur3
+    - run: echo $MAVARIABLE2        # affiche valeur1 car variable au niveaux du workflow
+      name: variable direct MAVARIABLE2
+
